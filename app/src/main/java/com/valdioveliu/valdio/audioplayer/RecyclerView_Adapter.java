@@ -1,64 +1,52 @@
 package com.valdioveliu.valdio.audioplayer;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.Collections;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-public class RecyclerView_Adapter extends RecyclerView.Adapter < ViewHolder > {
+    private final List<Audio> audioList;
+    private final Context context;
 
-    List < Audio > list = Collections.emptyList();
-    Context context;
-
-    public RecyclerView_Adapter(List < Audio > list, Context context) {
-        this.list = list;
+    public RecyclerViewAdapter(List<Audio> audioList, Context context) {
+        this.audioList = audioList;
         this.context = context;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //Inflate the layout, initialize the View Holder
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
-        ViewHolder holder = new ViewHolder(v);
-        return holder;
-
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
+        return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        //Use the provided View Holder on the onCreateViewHolder method to populate the current row on the RecyclerView
-        holder.title.setText(list.get(position).getTitle());
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Audio audio = audioList.get(position);
+        holder.title.setText(audio.getTitle());
     }
 
     @Override
     public int getItemCount() {
-        //returns the number of elements the RecyclerView will display
-        return list.size();
+        return audioList.size();
     }
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-}
+        TextView title;
+        ImageView playPause;
 
-class ViewHolder extends RecyclerView.ViewHolder {
-
-    TextView title;
-    ImageView play_pause;
-
-    ViewHolder(View itemView) {
-        super(itemView);
-        title = (TextView) itemView.findViewById(R.id.title);
-        play_pause = (ImageView) itemView.findViewById(R.id.play_pause);
+        ViewHolder(View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.title);
+            playPause = itemView.findViewById(R.id.play_pause);
+        }
     }
 }
